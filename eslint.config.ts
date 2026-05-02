@@ -2,10 +2,10 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { includeIgnoreFile } from '@eslint/compat'
-import { type TSESLint } from '@typescript-eslint/utils'
+import { type Linter } from 'eslint'
 import prettierConfig from 'eslint-config-prettier'
 import astro from 'eslint-plugin-astro'
-import tseslint, { configs } from 'typescript-eslint'
+import { configs } from 'typescript-eslint'
 
 // Import modular configurations
 import { astroConfig } from './.eslint/astro'
@@ -23,6 +23,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 const tsConfigPath = resolve(__dirname, './tsconfig.json')
+const gitignorePath = resolve(__dirname, './.gitignore')
 
 const ignoresConfig = {
   name: 'eslint/ignores',
@@ -54,11 +55,11 @@ const ignoresConfig = {
     '**/CHANGELOG.md',
     '**/README.md',
   ],
-} satisfies TSESLint.FlatConfig.Config
+} satisfies Linter.Config
 
-const config: TSESLint.FlatConfig.ConfigArray = tseslint.config(
+const config = [
   // Include .gitignore patterns
-  includeIgnoreFile(resolve(__dirname, '.gitignore')),
+  includeIgnoreFile(gitignorePath),
 
   // Core configurations
   ignoresConfig,
@@ -91,7 +92,7 @@ const config: TSESLint.FlatConfig.ConfigArray = tseslint.config(
   cspellConfig,
 
   // Prettier integration (must be last)
-  prettierConfig
-)
+  prettierConfig,
+]
 
 export default config

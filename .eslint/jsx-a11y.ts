@@ -1,7 +1,9 @@
-import { type Linter } from 'eslint'
+import { type ESLint, type Linter } from 'eslint'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 
 import { astroFiles, javascriptFiles, typescriptFiles } from './shared'
+
+const jsxA11yPlugin = jsxA11y as unknown as ESLint.Plugin
 
 export const jsxA11yConfig: Linter.Config = {
   name: 'eslint/jsx-a11y',
@@ -11,7 +13,7 @@ export const jsxA11yConfig: Linter.Config = {
     ...javascriptFiles.filter(f => f.includes('jsx')),
   ],
   plugins: {
-    'jsx-a11y': jsxA11y,
+    'jsx-a11y': jsxA11yPlugin,
   },
   rules: {
     ...jsxA11y.configs.recommended.rules,
